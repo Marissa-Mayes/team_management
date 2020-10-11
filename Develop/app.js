@@ -9,27 +9,122 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const { connect } = require("http2");
+
+//const writeFileAsync = util.promisify(fs.writeFile);
 
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
+let Team = [];
+    start()
 
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
+function start (){
+    console.log ("starting?")
+    inquirer.prompt({
+        name: "action",
+        type: "list",
+        message: "what would you like to do?",
+        choices: ["build team"]
+    }).then(answers=>{
+        switch (answers.action) {
+            case "build team":
+                return needAnswers()
+                break;
+        }},       
+        
+        
 
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
+function again() {
+    inquirer.prompt({
+        name: "again",
+        type: "confirm",
+        message: " want to do something else?",
+    }).then(answers =>{
+        switch (answers.again){
+            case true:
+                start()
+                break;
+                case false:
+                break;
+        
+    }},
+function needAnswers() {
+    console.log("start")
+    return inquirer.prompt([
+        {
+            type: "list",
+            name: "teamMember",
+            message: "Who do you want to add to the team?",
+            choices: [
+                "Manager",
+                "Engineer",
+                "Intern",
+            ]
+        },
+    ]).then(answers => {
+        switch (answers.action){
+            case " Add Manager":
+                return manager()
+                break;
+                
+                case "Add Engineer":
+                    return engineer()
+                    break;
+                    
+                        case "Add Intern":
+                            return intern()
+                            break;
+        }},                  
+     function again(){
+         inquirer.prompt({
+             name: "again",
+             type: "confirm",
+             message: "want to do something else",
+            
+         }).then(answer =>{
+             switch (answer.again){
+                 case true:
+                     start ()
+                     break;
+                     
+             }
+         })
+     },
 
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+
+    function manager() {
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "name",
+            message: "Please enter manager's name",
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "Please enter manager's email",
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "Please enter manager ID",
+        },
+        //The following question is unique to managers only
+        {
+            type: "input",
+            name: "officeNumber",
+            message: "Please enter manager's office room number",
+        },
+    ])
+        // Creates a new manager based on the input
+        .then(answers => {
+            const manager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber)
+            newTeam.push(manager)
+            return needAnswers()
+        })});
+})})}
+
+    
+
