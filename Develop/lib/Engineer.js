@@ -10,10 +10,10 @@ class Engineer extends Employee {
       this.email = email;
       this.id = id;
     }
-    GetGithub() {
+    getGithub() {
         return this.github;
     }
-    EmployeeRole() {
+    getRole() {
         return "Engineer";
     }
 }
